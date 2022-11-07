@@ -1,0 +1,32 @@
+name: manage-azure-policy-f2b5b2f7
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Audit_Linux_machines_that_do_not_have_the_passwd_file_permissions_set_to_0644_e6955644-301c-44b5-a4c4-528577de6861/**'
+#      - .github/workflows/manage-azure-policy-f2b5b2f7.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_f2b5b2f7}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Audit_Linux_machines_that_do_not_have_the_passwd_file_permissions_set_to_0644_e6955644-301c-44b5-a4c4-528577de6861/**
